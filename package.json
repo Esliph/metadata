@@ -37,15 +37,16 @@
     "reflect-metadata": "^0.2.2"
   },
   "devDependencies": {
-    "@types/node": "^20.12.12",
+    "@eslint/js": "^9.39.0",
+    "@types/node": "^24.9.2",
     "@typescript-eslint/eslint-plugin": "^8.46.2",
     "@typescript-eslint/parser": "^8.46.2",
     "eslint": "^9.39.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
     "prettier": "^3.6.2",
-    "tsup": "^8.0.2",
-    "tsx": "^4.10.5",
-    "typescript": "^5.4.5"
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.46.2",
+    "vitest": "^4.0.6"
   }
 }

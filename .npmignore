@@ -1,9 +1,9 @@
 .npmignore
-.eslintignore
-.eslintrc
+eslint.config.mjs
 .prettierignore
 .prettierrc
 .gitignore
 node_modules
 src
-update.js
+tests
+.github
