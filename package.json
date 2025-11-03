@@ -1,40 +1,51 @@
 {
-    "name": "@esliph/metadata",
-    "version": "1.0.2",
-    "description": "",
-    "main": "dist/index.js",
-    "types": "index.d.ts",
-    "private": false,
-    "scripts": {
-        "start": "node dist/index.js",
-        "rebuild": "rm -r dist --force && npm run build",
-        "test": "tsx watch src/test/index.ts",
-        "build": "bun build --entrypoints ./src/index.ts --outdir ./dist --target bun --minify --external '*' && tsc --emitDeclarationOnly --project tsconfig.json",
-        "publish": "npm publish --access public"
+  "name": "@esliph/metadata",
+  "version": "1.0.2",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "start": "node dist/index.js",
+    "test": "tsx watch src/test/index.ts",
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
+  },
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist/index.js",
+      "types": "./index.d.ts"
     },
-    "exports": {
-        ".": {
-            "require": "./dist/index.js",
-            "import": "./dist/index.js",
-            "types": "./index.d.ts"
-        },
-        "./package.json": "./package.json"
-    },
-    "files": [
-        "/dist",
-        "/index.d.ts"
-    ],
-    "keywords": [],
-    "author": "",
-    "license": "MIT",
-    "devDependencies": {
-        "@types/node": "^20.12.12",
-        "tsup": "^8.0.2",
-        "tsx": "^4.10.5",
-        "typescript": "^5.4.5"
-    },
-    "dependencies": {
-        "@esliph/decorator": "^1.0.3",
-        "reflect-metadata": "^0.2.2"
-    }
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "/dist/**/*"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Esliph/metadata.git"
+  },
+  "keywords": [
+    "typescript",
+    "npm",
+    "library"
+  ],
+  "author": "Dan Ruan",
+  "license": "MIT",
+  "dependencies": {
+    "@esliph/decorator": "^1.0.3",
+    "reflect-metadata": "^0.2.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.12",
+    "@typescript-eslint/eslint-plugin": "^8.46.2",
+    "@typescript-eslint/parser": "^8.46.2",
+    "eslint": "^9.39.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "prettier": "^3.6.2",
+    "tsup": "^8.0.2",
+    "tsx": "^4.10.5",
+    "typescript": "^5.4.5"
+  }
 }
