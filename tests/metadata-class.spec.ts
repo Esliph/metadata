@@ -127,6 +127,16 @@ describe('Reflect Metadata Class', () => {
       expect(reflect.hasMetadata('key-to-delete', ClassWithMetadataToDelete)).toBe(false)
     })
 
+    test('Esperado que ao deletar um metadado de uma classe que não tenha metadado não conflite com metadados de outra classe', () => {
+      class ClassWithMetadataToDelete { }
+      class ClassWithoutMetadata { }
+
+      reflect.defineMetadata('key', 'value', ClassWithMetadataToDelete)
+
+      reflect.deleteMetadata('key', ClassWithoutMetadata)
+      expect(reflect.hasMetadata('key', ClassWithMetadataToDelete)).toBe(true)
+    })
+
     test('Esperado deletar apenas o metadado definido em uma classe que tenha mais de um metadado registrado', () => {
       class ClassWithMultiMetadataAndDeleteOneOfThem { }
 
