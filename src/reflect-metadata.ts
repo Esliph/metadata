@@ -1,4 +1,5 @@
 import { MetadataContainer, MetadataKey, MetadataTarget, MetadataValue } from '@types'
+import { assertValidTarget } from '@utils/target'
 
 export class ReflectMetadata {
 
@@ -66,6 +67,8 @@ export class ReflectMetadata {
   }
 
   private static getTarget(target: MetadataTarget) {
+    assertValidTarget(target)
+
     return typeof target === 'object' && target.constructor
       ? target.constructor
       : target
