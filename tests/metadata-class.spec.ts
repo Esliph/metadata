@@ -1,9 +1,9 @@
-import { test, describe, expect, beforeEach } from 'vitest'
+import { beforeEach, describe, expect, test } from 'vitest'
 
-import { ReflectMetadata } from '@reflect-metadata'
-import { InvalidTargetReflectMetadataException } from '@exceptions/invalid-target.exception'
 import { ReflectMetadataErrorCode } from '@exceptions/code-errors'
-import { INVALID_TARGET_LIST, VALID_TARGET_LIST } from './common/types-target-list'
+import { InvalidTargetReflectMetadataException } from '@exceptions/invalid-target.exception'
+import { ReflectMetadata } from '@reflect-metadata'
+import { INVALID_TARGET_LIST, VALID_TARGET_LIST } from '@tests/common/types-target-list'
 
 describe('Reflect Metadata Class', () => {
   let reflect: ReflectMetadata
@@ -202,10 +202,10 @@ describe('Reflect Metadata Class', () => {
       class ClassWithoutMetadata { }
       class ClassWithMetadata { }
 
-      reflect.defineMetadata('key-conflit', 'value', ClassWithMetadata)
+      reflect.defineMetadata('key-conflict', 'value', ClassWithMetadata)
 
-      expect(reflect.hasMetadata('key-conflit', ClassWithMetadata)).toBe(true)
-      expect(reflect.hasMetadata('key-conflit', ClassWithoutMetadata)).toBe(false)
+      expect(reflect.hasMetadata('key-conflict', ClassWithMetadata)).toBe(true)
+      expect(reflect.hasMetadata('key-conflict', ClassWithoutMetadata)).toBe(false)
     })
   })
 

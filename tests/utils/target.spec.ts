@@ -1,12 +1,11 @@
-import { test, describe, expect, beforeEach } from 'vitest'
+import { beforeEach, describe, expect, test } from 'vitest'
 
 import { ReflectMetadata } from '@reflect-metadata'
+import { INVALID_TARGET_LIST, VALID_TARGET_LIST } from '@tests/common/types-target-list'
 import { isValidTarget } from '@utils/target'
-import { INVALID_TARGET_LIST, VALID_TARGET_LIST } from '../common/types-target-list'
 
 describe('Target inválidos', () => {
   let reflect: ReflectMetadata
-
 
   beforeEach(() => {
     reflect = new ReflectMetadata()
