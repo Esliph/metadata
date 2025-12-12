@@ -89,6 +89,28 @@ describe('Reflect Metadata Class', () => {
       expect(reflect.getMetadata('key', ClassFatherWithMetadata)).toBe('value')
       expect(reflect.getMetadata('key', ClassChildWithMetadataSeparated)).toBe('another-value')
     })
+
+    test('Esperado criar um metadado a partir de uma instância de uma classe como target', () => {
+      class Class { }
+
+      const instance = new Class()
+
+      reflect.defineMetadata('key', 'value', instance)
+
+      expect(reflect.getMetadata('key', instance)).toBe('value')
+      expect(reflect.hasMetadata('key', instance)).toBe(true)
+    })
+
+    test('Esperado encontrar o metadado registrado a partir de uma instância de uma classe como target usando a própria classe para busca-la', () => {
+      class Class { }
+
+      const instance = new Class()
+
+      reflect.defineMetadata('key', 'value', instance)
+
+      expect(reflect.getMetadata('key', Class)).toBe('value')
+      expect(reflect.hasMetadata('key', Class)).toBe(true)
+    })
   })
 
   describe('Remoção do Metadata', () => {
