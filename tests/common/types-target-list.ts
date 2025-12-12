@@ -21,3 +21,18 @@ export const INVALID_TARGET_LIST: any[] = [
   function* () { },
   async function () { },
 ]
+
+export const VALID_TARGET_LIST: any[] = [
+  class ValidClass { },
+  function Abc() { },
+  new Date(),
+  /abc/,
+  new Map(),
+  new Set(),
+  new WeakMap(),
+  new WeakSet(),
+  [],
+  Promise.resolve(),
+  Object.freeze({ a: 1 }),
+  Object.seal({ b: 2 }),
+]
