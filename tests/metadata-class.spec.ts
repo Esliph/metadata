@@ -1,6 +1,9 @@
 import { test, describe, expect, beforeEach } from 'vitest'
 
 import { ReflectMetadata } from '@reflect-metadata'
+import { InvalidTargetReflectMetadataException } from '@exceptions/invalid-target.exception'
+import { ReflectMetadataErrorCode } from '@exceptions/code-errors'
+import { INVALID_TARGET_LIST, VALID_TARGET_LIST } from './common/types-target-list'
 
 describe('Reflect Metadata Class', () => {
   let reflect: ReflectMetadata
@@ -193,6 +196,31 @@ describe('Reflect Metadata Class', () => {
 
       expect(reflect.hasMetadata('key-conflit', ClassWithMetadata)).toBe(true)
       expect(reflect.hasMetadata('key-conflit', ClassWithoutMetadata)).toBe(false)
+    })
+  })
+
+  describe('Target com tipos variados', () => {
+    test('Esperado disparar uma exceção quando tentar registrar um metadado com um target inválido', () => {
+      INVALID_TARGET_LIST.forEach(value => {
+        expect(() => {
+          try {
+            reflect.defineMetadata('key', 'value', value)
+          } catch (error: any) {
+            expect(error.code).toBe(ReflectMetadataErrorCode.TARGET_METADATA_INVALID)
+            throw error
+          }
+        }, `expected "${String(value)}" (${typeof value}) throw an erro`)
+          .toThrow(InvalidTargetReflectMetadataException)
+      })
+    })
+
+    test('Esperado não disparar uma exceção quando tentar registrar um metadado com um target válido', () => {
+      VALID_TARGET_LIST.forEach(value => {
+        expect(() => {
+          reflect.defineMetadata('key', 'value', value)
+        }, `expected "${String(value)}" (${typeof value}) not throw an erro`)
+          .not.toThrow(InvalidTargetReflectMetadataException)
+      })
     })
   })
 })
