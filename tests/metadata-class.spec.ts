@@ -12,8 +12,8 @@ describe('Reflect Metadata Class', () => {
     reflect = new ReflectMetadata()
   })
 
-  describe('Criação do Metadata', () => {
-    test('Esperado criar um metadado para a classe', () => {
+  describe('Metadata creation', () => {
+    test('should create metadata for a class', () => {
       class ClassWithMetadata { }
 
       reflect.defineMetadata('key', 'value', ClassWithMetadata)
@@ -22,7 +22,7 @@ describe('Reflect Metadata Class', () => {
       expect(reflect.hasMetadata('key', ClassWithMetadata)).toBe(true)
     })
 
-    test('Esperado sobrescrever o valor do metadado para a mesma chave que ja está registrada', () => {
+    test('should overwrite the metadata value for an already-registered key', () => {
       class ClassWithOverrideMetadata { }
 
       reflect.defineMetadata('key', 'value', ClassWithOverrideMetadata)
@@ -34,7 +34,7 @@ describe('Reflect Metadata Class', () => {
       expect(reflect.hasMetadata('key', ClassWithOverrideMetadata)).toBe(true)
     })
 
-    test('Esperado criar vários metadados para chaves diferentes sem conflitá-los', () => {
+    test('should create multiple metadata entries for different keys without conflicts', () => {
       class ClassWithMultiMetadata { }
 
       reflect.defineMetadata('key-1', 'value', ClassWithMultiMetadata)
@@ -46,7 +46,7 @@ describe('Reflect Metadata Class', () => {
       expect(reflect.hasMetadata('key-2', ClassWithMultiMetadata)).toBe(true)
     })
 
-    test('Esperado criar metadados com mesma chave para classes diferentes sem conflitá-los', () => {
+    test('should allow the same metadata key on different classes without conflicts', () => {
       class ClassWithMetadata { }
       class AnotherClassWithSameMetadata { }
 
@@ -59,7 +59,7 @@ describe('Reflect Metadata Class', () => {
       expect(reflect.hasMetadata('same-key', AnotherClassWithSameMetadata)).toBe(true)
     })
 
-    test('Esperado retornar um metadado de uma classe que foi definida em sua classe pai', () => {
+    test('should retrieve metadata defined on a parent class from a subclass', () => {
       class ClassFatherWithMetadata { }
       class ClassChildWithSharedMetadata extends ClassFatherWithMetadata { }
 
@@ -69,7 +69,7 @@ describe('Reflect Metadata Class', () => {
       expect(reflect.hasMetadata('key', ClassChildWithSharedMetadata)).toBe(true)
     })
 
-    test('Esperado retornar um metadado de uma classe que foi definida em sua classe pai com herança profunda', () => {
+    test('should retrieve metadata defined on an ancestor class across deep inheritance', () => {
       class ClassFatherWithMetadata { }
       class ClassChildWithSharedMetadataLevel1 extends ClassFatherWithMetadata { }
       class ClassChildWithSharedMetadataLevel2 extends ClassChildWithSharedMetadataLevel1 { }
@@ -82,7 +82,7 @@ describe('Reflect Metadata Class', () => {
       expect(reflect.hasMetadata('key', ClassChildWithSharedMetadataLevel4)).toBe(true)
     })
 
-    test('Esperado que o metadado definido na classe pai seja sobrescrita na classe filha sem conflitar com o metadado pai', () => {
+    test('should allow a subclass to override parent metadata without affecting the parent', () => {
       class ClassFatherWithMetadata { }
       class ClassChildWithMetadataSeparated extends ClassFatherWithMetadata { }
 
@@ -93,7 +93,7 @@ describe('Reflect Metadata Class', () => {
       expect(reflect.getMetadata('key', ClassChildWithMetadataSeparated)).toBe('another-value')
     })
 
-    test('Esperado criar um metadado a partir de uma instância de uma classe como target', () => {
+    test('should create metadata using a class instance as the target', () => {
       class Class { }
 
       const instance = new Class()
@@ -104,7 +104,7 @@ describe('Reflect Metadata Class', () => {
       expect(reflect.hasMetadata('key', instance)).toBe(true)
     })
 
-    test('Esperado encontrar o metadado registrado a partir de uma instância de uma classe como target usando a própria classe para busca-la', () => {
+    test('should retrieve metadata defined on an instance when querying by the class', () => {
       class Class { }
 
       const instance = new Class()
@@ -116,8 +116,8 @@ describe('Reflect Metadata Class', () => {
     })
   })
 
-  describe('Remoção do Metadata', () => {
-    test('Esperado deletar um metadado definido em uma classe', () => {
+  describe('Metadata removal', () => {
+    test('should delete metadata defined on a class', () => {
       class ClassWithMetadataToDelete { }
 
       reflect.defineMetadata('key-to-delete', 'value', ClassWithMetadataToDelete)
@@ -127,7 +127,7 @@ describe('Reflect Metadata Class', () => {
       expect(reflect.hasMetadata('key-to-delete', ClassWithMetadataToDelete)).toBe(false)
     })
 
-    test('Esperado que ao deletar um metadado de uma classe que não tenha metadado não conflite com metadados de outra classe', () => {
+    test('should not affect other classes when deleting a non-existent metadata on a class', () => {
       class ClassWithMetadataToDelete { }
       class ClassWithoutMetadata { }
 
@@ -137,7 +137,7 @@ describe('Reflect Metadata Class', () => {
       expect(reflect.hasMetadata('key', ClassWithMetadataToDelete)).toBe(true)
     })
 
-    test('Esperado deletar apenas o metadado definido em uma classe que tenha mais de um metadado registrado', () => {
+    test('should delete only the specified metadata when multiple metadata entries exist on a class', () => {
       class ClassWithMultiMetadataAndDeleteOneOfThem { }
 
       reflect.defineMetadata('key', 'value', ClassWithMultiMetadataAndDeleteOneOfThem)
@@ -151,7 +151,7 @@ describe('Reflect Metadata Class', () => {
       expect(reflect.hasMetadata('key-to-delete', ClassWithMultiMetadataAndDeleteOneOfThem)).toBe(false)
     })
 
-    test('Esperado deletar apenas o metadado definido na classe se conflitar com os metadados definidos em outras classes', () => {
+    test('should delete only the metadata on the target class when the same key exists on other classes', () => {
       class ClassMetadata { }
       class ClassWithMetadataToDelete { }
 
@@ -166,7 +166,7 @@ describe('Reflect Metadata Class', () => {
       expect(reflect.hasMetadata('same-key', ClassWithMetadataToDelete)).toBe(false)
     })
 
-    test('Esperado deletar apenas o metadado definido na classe se conflitar com os metadados definidos em outras classes da herança', () => {
+    test('should delete only the subclass metadata when the same key exists in the inheritance chain', () => {
       class ClassFatherWithMetadata { }
       class ClassChildWithMetadataSeparatedToDelete extends ClassFatherWithMetadata { }
 
@@ -183,14 +183,14 @@ describe('Reflect Metadata Class', () => {
     })
   })
 
-  describe('Metadados não encontrados', () => {
-    test('Esperado não encontrar um metadado informando uma classe que não possui metadados', () => {
+  describe('Metadata not found', () => {
+    test('should not find metadata for a class that has no metadata', () => {
       class ClassWithoutMetadata { }
 
       expect(reflect.hasMetadata('missing-key', ClassWithoutMetadata)).toBe(false)
     })
 
-    test('Esperado não encontrar um metadado informando uma chave que não esta registrada na classe que possui metadados', () => {
+    test('should not find metadata for an unregistered key on a class that has metadata', () => {
       class ClassWithMetadata { }
 
       reflect.defineMetadata('key', 'value', ClassWithMetadata)
@@ -198,7 +198,7 @@ describe('Reflect Metadata Class', () => {
       expect(reflect.hasMetadata('missing-key', ClassWithMetadata)).toBe(false)
     })
 
-    test('Esperado não encontrar um metadado informando uma classe que não possui metadados e que não conflite com outras que possui metadados', () => {
+    test('should not find metadata on a class without metadata and not confuse it with another class that has metadata', () => {
       class ClassWithoutMetadata { }
       class ClassWithMetadata { }
 
@@ -209,8 +209,8 @@ describe('Reflect Metadata Class', () => {
     })
   })
 
-  describe('Target com tipos variados', () => {
-    test('Esperado disparar uma exceção quando tentar registrar um metadado com um target inválido', () => {
+  describe('Targets with varied types', () => {
+    test('should throw an exception when attempting to register metadata with an invalid target', () => {
       INVALID_TARGET_LIST.forEach(value => {
         expect(() => {
           try {
@@ -219,16 +219,16 @@ describe('Reflect Metadata Class', () => {
             expect(error.code).toBe(ReflectMetadataErrorCode.TARGET_METADATA_INVALID)
             throw error
           }
-        }, `expected "${String(value)}" (${typeof value}) throw an erro`)
+        }, `expected "${String(value)}" (${typeof value}) to throw an error`)
           .toThrow(InvalidTargetReflectMetadataException)
       })
     })
 
-    test('Esperado não disparar uma exceção quando tentar registrar um metadado com um target válido', () => {
+    test('should not throw an exception when registering metadata with a valid target', () => {
       VALID_TARGET_LIST.forEach(value => {
         expect(() => {
           reflect.defineMetadata('key', 'value', value)
-        }, `expected "${String(value)}" (${typeof value}) not throw an erro`)
+        }, `expected "${String(value)}" (${typeof value}) not to throw an error`)
           .not.toThrow(InvalidTargetReflectMetadataException)
       })
     })
