@@ -17,3 +17,8 @@ export interface MetadataContainer {
   methods: MethodMetadataStore
   parameters: ParameterMetadataStore
 }
+
+export type MetadataPathInfo = {
+  key: MetadataKey
+  value: MetadataValue
+}
