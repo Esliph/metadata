@@ -1,47 +1,96 @@
-import { MetadataContainer, MetadataKey, MetadataTarget, MetadataValue } from '@types'
+import { MetadataContainer, MetadataKey, MetadataPathInfo, MetadataTarget, MetadataValue, PropertyKey } from '@types'
 import { assertValidTarget } from '@utils/target'
 
 export class ReflectMetadata {
 
-  private storage = new WeakMap<object, MetadataContainer>()
+  protected storage = new WeakMap<object, MetadataContainer>()
 
-  defineMetadata(key: MetadataKey, value: MetadataValue, target: MetadataTarget) {
-    const targetContainer = this.getOrCreateTargetMetadataContainer(target)
+  defineMetadata(key: MetadataKey, value: MetadataValue, target: MetadataTarget, propertyKey?: PropertyKey) {
+    if (propertyKey !== undefined) {
+      return this.definePropertyMetadata({ key, value }, target, propertyKey)
+    }
 
-    targetContainer.class.set(key, value)
+    return this.defineClassMetadata({ key, value }, target)
   }
 
-  deleteMetadata(key: MetadataKey, target: MetadataTarget) {
-    const targetKey = ReflectMetadata.getTarget(target)
+  deleteMetadata(key: MetadataKey, target: MetadataTarget, propertyKey?: PropertyKey) {
+    const targetKey = ReflectMetadata.getTarget(target, propertyKey)
+    const container = this.storage.get(targetKey)
 
-    const targetContainer = this.storage.get(targetKey)
-
-    if (!targetContainer) {
+    if (!container) {
       return
     }
 
-    targetContainer.class.delete(key)
+    if (propertyKey !== undefined) {
+      const prop = container.properties.get(propertyKey)
+
+      if (prop) {
+        prop.delete(key)
+      }
+
+      return
+    }
+
+    container.class.delete(key)
   }
 
-  getMetadata(key: MetadataKey, target: MetadataTarget) {
-    return this.lookupPrototype(target, container => container.class.get(key))
+  getMetadata(key: MetadataKey, target: MetadataTarget, propertyKey?: PropertyKey) {
+    if (propertyKey !== undefined) {
+      return this.lookupPropertyPrototype(key, target, propertyKey)
+    }
+
+    return this.lookupClassPrototype(key, target)
   }
 
-  hasMetadata(key: MetadataKey, target: MetadataTarget) {
-    return this.lookupPrototype(target, container => container.class.get(key)) !== undefined
+  hasMetadata(key: MetadataKey, target: MetadataTarget, propertyKey?: PropertyKey) {
+    return this.getMetadata(key, target, propertyKey) !== undefined
   }
 
-  private lookupPrototype(target: MetadataTarget, fn: (record: MetadataContainer) => any) {
-    let current = ReflectMetadata.getTarget(target)
+  protected defineClassMetadata({ key, value }: MetadataPathInfo, target: MetadataTarget) {
+    const container = this.getOrCreateTargetMetadataContainer(target)
+    container.class.set(key, value)
+  }
+
+  protected definePropertyMetadata({ key, value }: MetadataPathInfo, target: MetadataTarget, propertyKey: PropertyKey) {
+    const container = this.getOrCreateTargetMetadataContainer(target, propertyKey)
+
+    let storage = container.properties.get(propertyKey)
+
+    if (!storage) {
+      storage = new Map()
+      container.properties.set(propertyKey, storage)
+    }
+
+    storage.set(key, value)
+  }
+
+  protected lookupClassPrototype(key: MetadataKey, target: MetadataTarget) {
+    let current: any = ReflectMetadata.getTarget(target)
+
+    while (current) {
+      const container = this.storage.get(current)
+
+      if (container && container.class.has(key)) {
+        return container.class.get(key)
+      }
+
+      current = Object.getPrototypeOf(current)
+    }
+
+    return undefined
+  }
+
+  protected lookupPropertyPrototype(key: MetadataKey, target: MetadataTarget, propertyKey: PropertyKey) {
+    let current: any = ReflectMetadata.getTarget(target, propertyKey)
 
     while (current) {
       const container = this.storage.get(current)
 
       if (container) {
-        const value = fn(container)
+        const storage = container.properties.get(propertyKey)
 
-        if (value !== undefined) {
-          return value
+        if (storage && storage.has(key)) {
+          return storage.get(key)
         }
       }
 
@@ -51,26 +100,40 @@ export class ReflectMetadata {
     return undefined
   }
 
-  private getOrCreateTargetMetadataContainer(target: MetadataTarget): MetadataContainer {
-    const targetKey = ReflectMetadata.getTarget(target)
+  protected getOrCreateTargetMetadataContainer(target: MetadataTarget, propertyKey?: PropertyKey): MetadataContainer {
+    const targetKey = ReflectMetadata.getTarget(target, propertyKey)
 
-    if (!this.storage.has(targetKey)) {
-      this.storage.set(targetKey, {
+    let container = this.storage.get(targetKey)
+
+    if (!container) {
+      container = {
         class: new Map(),
         properties: new Map(),
         methods: new Map(),
         parameters: new Map()
-      })
+      }
+
+      this.storage.set(targetKey, container)
     }
 
-    return this.storage.get(targetKey)!
+    return container
   }
 
-  private static getTarget(target: MetadataTarget) {
+  protected static getTarget(target: MetadataTarget, propertyKey?: PropertyKey) {
     assertValidTarget(target)
 
-    return typeof target === 'object' && target.constructor
-      ? target.constructor
-      : target
+    if (propertyKey !== undefined) {
+      if (typeof target === 'function') {
+        return target.prototype
+      }
+
+      return target
+    }
+
+    if (typeof target === 'object' && target !== null && (target as any).constructor) {
+      return (target as any).constructor
+    }
+
+    return target
   }
 }
