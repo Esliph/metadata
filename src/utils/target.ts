@@ -3,7 +3,7 @@ import { MetadataTarget } from '@types'
 
 export function assertValidTarget(target: any) {
   if (!isValidTarget(target)) {
-    throw new InvalidTargetReflectMetadataException('O target deve ser uma função (classe) ou um objeto.')
+    throw new InvalidTargetReflectMetadataException(`The target must be a "function (class)" or an "object", but a "${typeof target}" was received.`)
   }
 }
 
