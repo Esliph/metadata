@@ -13,8 +13,3 @@ export interface MetadataStorage {
   methods: MethodMetadataStore
   parameters: ParameterMetadataStore
 }
-
-export type MetadataPathInfo = {
-  key: MetadataKey
-  value: MetadataValue
-}

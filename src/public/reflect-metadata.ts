@@ -6,7 +6,7 @@ export class ReflectMetadata {
   protected container = new MetadataContainer()
 
   defineMetadata(key: MetadataKey, value: MetadataValue, target: MetadataTarget, propertyKey?: PropertyKey) {
-    return this.container.defineMetadata({ key, value }, target, propertyKey)
+    return this.container.defineMetadata(key, value, target, propertyKey)
   }
 
   deleteMetadata(key: MetadataKey, target: MetadataTarget, propertyKey?: PropertyKey) {

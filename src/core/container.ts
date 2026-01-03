@@ -1,26 +1,26 @@
-import { MetadataKey, MetadataTarget } from '@contracts/metadata'
+import { MetadataKey, MetadataTarget, MetadataValue } from '@contracts/metadata'
 import { assertValidTarget } from '@core/target'
-import { MetadataPathInfo, MetadataStorage } from '@core/types'
+import { MetadataStorage } from '@core/types'
 
 export class MetadataContainer {
 
   protected storage = new WeakMap<object, MetadataStorage>()
 
-  defineMetadata(info: MetadataPathInfo, target: MetadataTarget, propertyKey?: PropertyKey) {
+  defineMetadata(key: MetadataKey, value: MetadataValue, target: MetadataTarget, propertyKey?: PropertyKey) {
     if (propertyKey !== undefined) {
-      this.definePropertyMetadata(info, target, propertyKey)
+      this.definePropertyMetadata(key, value, target, propertyKey)
       return
     }
 
-    this.defineClassMetadata(info, target)
+    this.defineClassMetadata(key, value, target)
   }
 
-  defineClassMetadata({ key, value }: MetadataPathInfo, target: MetadataTarget) {
+  defineClassMetadata(key: MetadataKey, value: MetadataValue, target: MetadataTarget) {
     const container = this.getOrCreateMetadataStorage(target)
     container.class.set(key, value)
   }
 
-  definePropertyMetadata({ key, value }: MetadataPathInfo, target: MetadataTarget, propertyKey: PropertyKey) {
+  definePropertyMetadata(key: MetadataKey, value: MetadataValue, target: MetadataTarget, propertyKey: PropertyKey) {
     const container = this.getOrCreateMetadataStorage(target, propertyKey)
 
     let storage = container.properties.get(propertyKey)
