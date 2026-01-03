@@ -112,6 +112,10 @@ export class MetadataContainer {
 
     if (propertyKey !== undefined) {
       if (typeof target === 'function') {
+        if (String(propertyKey) === 'constructor') {
+          return target as object
+        }
+
         return target.prototype
       }
 
