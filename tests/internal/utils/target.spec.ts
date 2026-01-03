@@ -1,14 +1,14 @@
 import { beforeEach, describe, expect, test } from 'vitest'
 
-import { ReflectMetadata } from '@public/reflect-metadata'
+import { MetadataContainer } from '@core/container'
 import { INVALID_TARGET_LIST, VALID_TARGET_LIST } from '@tests/common/types-target-list'
 import { isValidTarget } from '@utils/target'
 
 describe('Invalid targets', () => {
-  let reflect: ReflectMetadata
+  let container: MetadataContainer
 
   beforeEach(() => {
-    reflect = new ReflectMetadata()
+    container = new MetadataContainer()
   })
 
   test('should classify different data types as invalid targets', () => {
