@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, test } from 'vitest'
 
 import { ReflectMetadataErrorCode } from '@exceptions/code-errors'
 import { InvalidTargetReflectMetadataException } from '@exceptions/invalid-target.exception'
-import { ReflectMetadata } from '@reflect-metadata'
+import { ReflectMetadata } from '@public/reflect-metadata'
 import { INVALID_TARGET_LIST, VALID_TARGET_LIST } from '@tests/common/types-target-list'
 
 describe('Reflect Metadata Property', () => {

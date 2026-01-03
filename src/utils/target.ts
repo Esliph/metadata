@@ -1,11 +1,4 @@
-import { InvalidTargetReflectMetadataException } from '@exceptions/invalid-target.exception'
-import { MetadataTarget } from '@types'
-
-export function assertValidTarget(target: any) {
-  if (!isValidTarget(target)) {
-    throw new InvalidTargetReflectMetadataException(`The target must be a "function (class)" or an "object", but a "${typeof target}" was received.`)
-  }
-}
+import { MetadataTarget } from '@contracts/metadata'
 
 export function isValidTarget(target: any): target is MetadataTarget {
   if (!target) {
