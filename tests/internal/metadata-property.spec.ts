@@ -18,10 +18,10 @@ describe('MetadataContainer Property', () => {
         prop: any
       }
 
-      container.defineMetadata('key', 'value', PropertyWithMetadata.prototype, 'prop')
+      container.definePropertyMetadata('key', 'value', PropertyWithMetadata.prototype, 'prop')
 
-      expect(container.getMetadata('key', PropertyWithMetadata.prototype, 'prop')).toBe('value')
-      expect(container.hasMetadata('key', PropertyWithMetadata.prototype, 'prop')).toBe(true)
+      expect(container.getPropertyMetadata('key', PropertyWithMetadata.prototype, 'prop')).toBe('value')
+      expect(container.hasPropertyMetadata('key', PropertyWithMetadata.prototype, 'prop')).toBe(true)
     })
 
     test('should overwrite the metadata value for an already-registered key', () => {
@@ -29,11 +29,11 @@ describe('MetadataContainer Property', () => {
         prop: any
       }
 
-      container.defineMetadata('key', 'value', PropertyWithOverrideMetadata.prototype, 'prop')
-      expect(container.getMetadata('key', PropertyWithOverrideMetadata.prototype, 'prop')).toBe('value')
+      container.definePropertyMetadata('key', 'value', PropertyWithOverrideMetadata.prototype, 'prop')
+      expect(container.getPropertyMetadata('key', PropertyWithOverrideMetadata.prototype, 'prop')).toBe('value')
 
-      container.defineMetadata('key', 'another-value', PropertyWithOverrideMetadata.prototype, 'prop')
-      expect(container.getMetadata('key', PropertyWithOverrideMetadata.prototype, 'prop')).toBe('another-value')
+      container.definePropertyMetadata('key', 'another-value', PropertyWithOverrideMetadata.prototype, 'prop')
+      expect(container.getPropertyMetadata('key', PropertyWithOverrideMetadata.prototype, 'prop')).toBe('another-value')
     })
 
     test('should create multiple metadata entries for different keys without conflicts', () => {
@@ -41,14 +41,14 @@ describe('MetadataContainer Property', () => {
         prop: any
       }
 
-      container.defineMetadata('key', 'value', PropertyWithMultiMetadata.prototype, 'prop')
-      container.defineMetadata('another-key', 'another-value', PropertyWithMultiMetadata.prototype, 'prop')
+      container.definePropertyMetadata('key', 'value', PropertyWithMultiMetadata.prototype, 'prop')
+      container.definePropertyMetadata('another-key', 'another-value', PropertyWithMultiMetadata.prototype, 'prop')
 
-      expect(container.getMetadata('key', PropertyWithMultiMetadata.prototype, 'prop')).toBe('value')
-      expect(container.hasMetadata('key', PropertyWithMultiMetadata.prototype, 'prop')).toBe(true)
+      expect(container.getPropertyMetadata('key', PropertyWithMultiMetadata.prototype, 'prop')).toBe('value')
+      expect(container.hasPropertyMetadata('key', PropertyWithMultiMetadata.prototype, 'prop')).toBe(true)
 
-      expect(container.getMetadata('another-key', PropertyWithMultiMetadata.prototype, 'prop')).toBe('another-value')
-      expect(container.hasMetadata('another-key', PropertyWithMultiMetadata.prototype, 'prop')).toBe(true)
+      expect(container.getPropertyMetadata('another-key', PropertyWithMultiMetadata.prototype, 'prop')).toBe('another-value')
+      expect(container.hasPropertyMetadata('another-key', PropertyWithMultiMetadata.prototype, 'prop')).toBe(true)
     })
 
     test('should allow the same metadata key in different properties of the same class without conflicts', () => {
@@ -57,14 +57,14 @@ describe('MetadataContainer Property', () => {
         propB: any
       }
 
-      container.defineMetadata('same-key', 'value', MultiPropertyWithMetadata.prototype, 'propA')
-      container.defineMetadata('same-key', 'another-value', MultiPropertyWithMetadata.prototype, 'propB')
+      container.definePropertyMetadata('same-key', 'value', MultiPropertyWithMetadata.prototype, 'propA')
+      container.definePropertyMetadata('same-key', 'another-value', MultiPropertyWithMetadata.prototype, 'propB')
 
-      expect(container.getMetadata('same-key', MultiPropertyWithMetadata.prototype, 'propA')).toBe('value')
-      expect(container.hasMetadata('same-key', MultiPropertyWithMetadata.prototype, 'propA')).toBe(true)
+      expect(container.getPropertyMetadata('same-key', MultiPropertyWithMetadata.prototype, 'propA')).toBe('value')
+      expect(container.hasPropertyMetadata('same-key', MultiPropertyWithMetadata.prototype, 'propA')).toBe(true)
 
-      expect(container.getMetadata('same-key', MultiPropertyWithMetadata.prototype, 'propB')).toBe('another-value')
-      expect(container.hasMetadata('same-key', MultiPropertyWithMetadata.prototype, 'propB')).toBe(true)
+      expect(container.getPropertyMetadata('same-key', MultiPropertyWithMetadata.prototype, 'propB')).toBe('another-value')
+      expect(container.hasPropertyMetadata('same-key', MultiPropertyWithMetadata.prototype, 'propB')).toBe(true)
     })
 
     test('should allow the same metadata key in different properties on different classes without conflicts', () => {
@@ -75,14 +75,14 @@ describe('MetadataContainer Property', () => {
         prop: any
       }
 
-      container.defineMetadata('same-key', 'value', PropertyWithMetadataA.prototype, 'prop')
-      container.defineMetadata('same-key', 'another-value', PropertyWithMetadataB.prototype, 'prop')
+      container.definePropertyMetadata('same-key', 'value', PropertyWithMetadataA.prototype, 'prop')
+      container.definePropertyMetadata('same-key', 'another-value', PropertyWithMetadataB.prototype, 'prop')
 
-      expect(container.getMetadata('same-key', PropertyWithMetadataA.prototype, 'prop')).toBe('value')
-      expect(container.hasMetadata('same-key', PropertyWithMetadataA.prototype, 'prop')).toBe(true)
+      expect(container.getPropertyMetadata('same-key', PropertyWithMetadataA.prototype, 'prop')).toBe('value')
+      expect(container.hasPropertyMetadata('same-key', PropertyWithMetadataA.prototype, 'prop')).toBe(true)
 
-      expect(container.getMetadata('same-key', PropertyWithMetadataB.prototype, 'prop')).toBe('another-value')
-      expect(container.hasMetadata('same-key', PropertyWithMetadataB.prototype, 'prop')).toBe(true)
+      expect(container.getPropertyMetadata('same-key', PropertyWithMetadataB.prototype, 'prop')).toBe('another-value')
+      expect(container.hasPropertyMetadata('same-key', PropertyWithMetadataB.prototype, 'prop')).toBe(true)
     })
 
     test('should retrieve metadata defined on a parent class from a subclass', () => {
@@ -91,10 +91,10 @@ describe('MetadataContainer Property', () => {
       }
       class PropertyChildWithSharedMetadata extends PropertyFatherWithMetadata { }
 
-      container.defineMetadata('key', 'value', PropertyFatherWithMetadata.prototype, 'prop')
+      container.definePropertyMetadata('key', 'value', PropertyFatherWithMetadata.prototype, 'prop')
 
-      expect(container.getMetadata('key', PropertyChildWithSharedMetadata.prototype, 'prop')).toBe('value')
-      expect(container.hasMetadata('key', PropertyChildWithSharedMetadata.prototype, 'prop')).toBe(true)
+      expect(container.getPropertyMetadata('key', PropertyChildWithSharedMetadata.prototype, 'prop')).toBe('value')
+      expect(container.hasPropertyMetadata('key', PropertyChildWithSharedMetadata.prototype, 'prop')).toBe(true)
     })
 
     test('should retrieve metadata defined on an ancestor class across deep inheritance', () => {
@@ -104,10 +104,10 @@ describe('MetadataContainer Property', () => {
       class PropertyChildWithSharedMetadataLevel3 extends PropertyChildWithSharedMetadataLevel2 { }
       class PropertyChildWithSharedMetadataLevel4 extends PropertyChildWithSharedMetadataLevel3 { }
 
-      container.defineMetadata('key', 'value', PropertyFatherWithMetadata.prototype, 'prop')
+      container.definePropertyMetadata('key', 'value', PropertyFatherWithMetadata.prototype, 'prop')
 
-      expect(container.getMetadata('key', PropertyChildWithSharedMetadataLevel4.prototype, 'prop')).toBe('value')
-      expect(container.hasMetadata('key', PropertyChildWithSharedMetadataLevel4.prototype, 'prop')).toBe(true)
+      expect(container.getPropertyMetadata('key', PropertyChildWithSharedMetadataLevel4.prototype, 'prop')).toBe('value')
+      expect(container.hasPropertyMetadata('key', PropertyChildWithSharedMetadataLevel4.prototype, 'prop')).toBe(true)
     })
 
     test('should allow a subclass to override parent metadata without affecting the parent', () => {
@@ -116,11 +116,11 @@ describe('MetadataContainer Property', () => {
       }
       class PropertyChildWithSharedMetadata extends PropertyFatherWithMetadata { }
 
-      container.defineMetadata('key', 'value', PropertyFatherWithMetadata.prototype, 'prop')
-      container.defineMetadata('key', 'another-value', PropertyChildWithSharedMetadata.prototype, 'prop')
+      container.definePropertyMetadata('key', 'value', PropertyFatherWithMetadata.prototype, 'prop')
+      container.definePropertyMetadata('key', 'another-value', PropertyChildWithSharedMetadata.prototype, 'prop')
 
-      expect(container.getMetadata('key', PropertyFatherWithMetadata.prototype, 'prop')).toBe('value')
-      expect(container.getMetadata('key', PropertyChildWithSharedMetadata.prototype, 'prop')).toBe('another-value')
+      expect(container.getPropertyMetadata('key', PropertyFatherWithMetadata.prototype, 'prop')).toBe('value')
+      expect(container.getPropertyMetadata('key', PropertyChildWithSharedMetadata.prototype, 'prop')).toBe('another-value')
     })
 
     test('should create metadata using a class instance as the target', () => {
@@ -130,10 +130,10 @@ describe('MetadataContainer Property', () => {
 
       const instance = new Property()
 
-      container.defineMetadata('key', 'value', instance, 'prop')
+      container.definePropertyMetadata('key', 'value', instance, 'prop')
 
-      expect(container.getMetadata('key', instance, 'prop')).toBe('value')
-      expect(container.hasMetadata('key', instance, 'prop')).toBe(true)
+      expect(container.getPropertyMetadata('key', instance, 'prop')).toBe('value')
+      expect(container.hasPropertyMetadata('key', instance, 'prop')).toBe(true)
     })
 
     test('should not retrieve metadata defined on an instance when querying by the class', () => {
@@ -143,10 +143,10 @@ describe('MetadataContainer Property', () => {
 
       const instance = new Property()
 
-      container.defineMetadata('key', 'value', instance, 'prop')
+      container.definePropertyMetadata('key', 'value', instance, 'prop')
 
-      expect(container.getMetadata('key', Property, 'prop')).toBeUndefined()
-      expect(container.hasMetadata('key', Property, 'prop')).toBe(false)
+      expect(container.getPropertyMetadata('key', Property, 'prop')).toBeUndefined()
+      expect(container.hasPropertyMetadata('key', Property, 'prop')).toBe(false)
     })
   })
 
@@ -156,11 +156,11 @@ describe('MetadataContainer Property', () => {
         prop: any
       }
 
-      container.defineMetadata('key', 'value', ClassWithMetadataInPropertyToDelete.prototype, 'prop')
-      expect(container.hasMetadata('key', ClassWithMetadataInPropertyToDelete.prototype, 'prop')).toBe(true)
+      container.definePropertyMetadata('key', 'value', ClassWithMetadataInPropertyToDelete.prototype, 'prop')
+      expect(container.hasPropertyMetadata('key', ClassWithMetadataInPropertyToDelete.prototype, 'prop')).toBe(true)
 
-      container.deleteMetadata('key', ClassWithMetadataInPropertyToDelete.prototype, 'prop')
-      expect(container.hasMetadata('key', ClassWithMetadataInPropertyToDelete.prototype, 'prop')).toBe(false)
+      container.deletePropertyMetadata('key', ClassWithMetadataInPropertyToDelete.prototype, 'prop')
+      expect(container.hasPropertyMetadata('key', ClassWithMetadataInPropertyToDelete.prototype, 'prop')).toBe(false)
     })
 
     test('should not affect other classes when deleting a non-existent metadata on a class', () => {
@@ -172,10 +172,10 @@ describe('MetadataContainer Property', () => {
         prop: any
       }
 
-      container.defineMetadata('key', 'value', ClassWithMetadataToDelete.prototype, 'prop')
+      container.definePropertyMetadata('key', 'value', ClassWithMetadataToDelete.prototype, 'prop')
 
-      container.deleteMetadata('key', ClassWithoutMetadata.prototype, 'prop')
-      expect(container.hasMetadata('key', ClassWithMetadataToDelete.prototype, 'prop')).toBe(true)
+      container.deletePropertyMetadata('key', ClassWithoutMetadata.prototype, 'prop')
+      expect(container.hasPropertyMetadata('key', ClassWithMetadataToDelete.prototype, 'prop')).toBe(true)
     })
 
     test('should delete only the specified metadata when multiple metadata entries exist on a class', () => {
@@ -183,14 +183,14 @@ describe('MetadataContainer Property', () => {
         prop: any
       }
 
-      container.defineMetadata('key', 'value', ClassWithMultiMetadataAndDeleteOneOfThem.prototype, 'prop')
-      container.defineMetadata('key-to-delete', 'deleted', ClassWithMultiMetadataAndDeleteOneOfThem.prototype, 'prop')
+      container.definePropertyMetadata('key', 'value', ClassWithMultiMetadataAndDeleteOneOfThem.prototype, 'prop')
+      container.definePropertyMetadata('key-to-delete', 'deleted', ClassWithMultiMetadataAndDeleteOneOfThem.prototype, 'prop')
 
-      expect(container.hasMetadata('key-to-delete', ClassWithMultiMetadataAndDeleteOneOfThem.prototype, 'prop')).toBe(true)
+      expect(container.hasPropertyMetadata('key-to-delete', ClassWithMultiMetadataAndDeleteOneOfThem.prototype, 'prop')).toBe(true)
 
-      container.deleteMetadata('key-to-delete', ClassWithMultiMetadataAndDeleteOneOfThem.prototype, 'prop')
+      container.deletePropertyMetadata('key-to-delete', ClassWithMultiMetadataAndDeleteOneOfThem.prototype, 'prop')
 
-      expect(container.hasMetadata('key-to-delete', ClassWithMultiMetadataAndDeleteOneOfThem.prototype, 'prop')).toBe(false)
+      expect(container.hasPropertyMetadata('key-to-delete', ClassWithMultiMetadataAndDeleteOneOfThem.prototype, 'prop')).toBe(false)
     })
 
     test('should delete only the metadata on the target class when the same key exists on other classes', () => {
@@ -202,15 +202,15 @@ describe('MetadataContainer Property', () => {
         prop: any
       }
 
-      container.defineMetadata('same-key', 'value', ClassMetadata.prototype, 'prop')
-      container.defineMetadata('same-key', 'deleted', ClassWithMetadataToDelete.prototype, 'prop')
+      container.definePropertyMetadata('same-key', 'value', ClassMetadata.prototype, 'prop')
+      container.definePropertyMetadata('same-key', 'deleted', ClassWithMetadataToDelete.prototype, 'prop')
 
-      expect(container.hasMetadata('same-key', ClassWithMetadataToDelete.prototype, 'prop')).toBe(true)
+      expect(container.hasPropertyMetadata('same-key', ClassWithMetadataToDelete.prototype, 'prop')).toBe(true)
 
-      container.deleteMetadata('same-key', ClassWithMetadataToDelete.prototype, 'prop')
+      container.deletePropertyMetadata('same-key', ClassWithMetadataToDelete.prototype, 'prop')
 
-      expect(container.hasMetadata('same-key', ClassMetadata.prototype, 'prop')).toBe(true)
-      expect(container.hasMetadata('same-key', ClassWithMetadataToDelete.prototype, 'prop')).toBe(false)
+      expect(container.hasPropertyMetadata('same-key', ClassMetadata.prototype, 'prop')).toBe(true)
+      expect(container.hasPropertyMetadata('same-key', ClassWithMetadataToDelete.prototype, 'prop')).toBe(false)
     })
 
     test('should delete only the subclass metadata when the same key exists in the inheritance chain', () => {
@@ -220,16 +220,16 @@ describe('MetadataContainer Property', () => {
 
       class ClassChildWithMetadataSeparatedToDelete extends ClassFatherWithMetadata { }
 
-      container.defineMetadata('key', 'value', ClassFatherWithMetadata.prototype, 'prop')
-      container.defineMetadata('key', 'deleted', ClassChildWithMetadataSeparatedToDelete.prototype, 'prop')
+      container.definePropertyMetadata('key', 'value', ClassFatherWithMetadata.prototype, 'prop')
+      container.definePropertyMetadata('key', 'deleted', ClassChildWithMetadataSeparatedToDelete.prototype, 'prop')
 
-      expect(container.getMetadata('key', ClassFatherWithMetadata.prototype, 'prop')).toBe('value')
-      expect(container.getMetadata('key', ClassChildWithMetadataSeparatedToDelete.prototype, 'prop')).toBe('deleted')
+      expect(container.getPropertyMetadata('key', ClassFatherWithMetadata.prototype, 'prop')).toBe('value')
+      expect(container.getPropertyMetadata('key', ClassChildWithMetadataSeparatedToDelete.prototype, 'prop')).toBe('deleted')
 
-      container.deleteMetadata('key', ClassChildWithMetadataSeparatedToDelete.prototype, 'prop')
+      container.deletePropertyMetadata('key', ClassChildWithMetadataSeparatedToDelete.prototype, 'prop')
 
-      expect(container.getMetadata('key', ClassFatherWithMetadata.prototype, 'prop')).toBe('value')
-      expect(container.getMetadata('key', ClassChildWithMetadataSeparatedToDelete.prototype, 'prop')).toBe('value')
+      expect(container.getPropertyMetadata('key', ClassFatherWithMetadata.prototype, 'prop')).toBe('value')
+      expect(container.getPropertyMetadata('key', ClassChildWithMetadataSeparatedToDelete.prototype, 'prop')).toBe('value')
     })
   })
 
@@ -239,7 +239,7 @@ describe('MetadataContainer Property', () => {
         prop: any
       }
 
-      expect(container.hasMetadata('missing-key', ClassWithoutMetadata.prototype, 'prop')).toBe(false)
+      expect(container.hasPropertyMetadata('missing-key', ClassWithoutMetadata.prototype, 'prop')).toBe(false)
     })
 
     test('should not find metadata for an unregistered key on a class that has metadata', () => {
@@ -247,9 +247,9 @@ describe('MetadataContainer Property', () => {
         prop: any
       }
 
-      container.defineMetadata('key', 'value', ClassWithMetadata.prototype, 'prop')
+      container.definePropertyMetadata('key', 'value', ClassWithMetadata.prototype, 'prop')
 
-      expect(container.hasMetadata('missing-key', ClassWithMetadata.prototype, 'prop')).toBe(false)
+      expect(container.hasPropertyMetadata('missing-key', ClassWithMetadata.prototype, 'prop')).toBe(false)
     })
 
     test('should not find metadata on a class without metadata and not confuse it with another class that has metadata', () => {
@@ -261,10 +261,10 @@ describe('MetadataContainer Property', () => {
         prop: any
       }
 
-      container.defineMetadata('key-conflict', 'value', ClassWithMetadata.prototype, 'prop')
+      container.definePropertyMetadata('key-conflict', 'value', ClassWithMetadata.prototype, 'prop')
 
-      expect(container.hasMetadata('key-conflict', ClassWithMetadata.prototype, 'prop')).toBe(true)
-      expect(container.hasMetadata('key-conflict', ClassWithoutMetadata.prototype, 'prop')).toBe(false)
+      expect(container.hasPropertyMetadata('key-conflict', ClassWithMetadata.prototype, 'prop')).toBe(true)
+      expect(container.hasPropertyMetadata('key-conflict', ClassWithoutMetadata.prototype, 'prop')).toBe(false)
     })
   })
 
@@ -273,7 +273,7 @@ describe('MetadataContainer Property', () => {
       INVALID_TARGET_LIST.forEach(value => {
         expect(() => {
           try {
-            container.defineMetadata('key', 'value', value, 'prop')
+            container.definePropertyMetadata('key', 'value', value, 'prop')
           } catch (error: any) {
             expect(error.code).toBe(ReflectMetadataErrorCode.TARGET_METADATA_INVALID)
             throw error
@@ -286,7 +286,7 @@ describe('MetadataContainer Property', () => {
     test('should not throw an exception when registering metadata with a valid target', () => {
       VALID_TARGET_LIST.forEach(value => {
         expect(() => {
-          container.defineMetadata('key', 'value', value, 'prop')
+          container.definePropertyMetadata('key', 'value', value, 'prop')
         }, `expected "${String(value)}" (${typeof value}) not to throw an error`)
           .not.toThrow(InvalidTargetReflectMetadataException)
       })
