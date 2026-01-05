@@ -9,17 +9,17 @@ export class MetadataContainer {
 
   protected lookupCache = new WeakMap<object, Map<any, any>>()
 
-  defineMetadata(key: MetadataKey, value: MetadataValue, target: MetadataTarget, propertyKey?: PropertyKey) {
+  defineMetadata(key: MetadataKey, value: MetadataValue, target: MetadataTarget, propertyKey?: PropertyKey, parameterIndex?: number) {
     const normalized = MetadataContainer.normalizeTarget(target, propertyKey)
 
     const map = this.getOrCreateMap(normalized)
-    const compositeKey = MetadataContainer.makeCompositeKey(key, propertyKey)
+    const compositeKey = MetadataContainer.makeCompositeKey(key, propertyKey, parameterIndex)
 
     map.set(compositeKey, value)
     this.lookupCache.delete(normalized)
   }
 
-  deleteMetadata(key: MetadataKey, target: MetadataTarget, propertyKey?: PropertyKey) {
+  deleteMetadata(key: MetadataKey, target: MetadataTarget, propertyKey?: PropertyKey, parameterIndex?: number) {
     const normalized = MetadataContainer.normalizeTarget(target, propertyKey)
     const map = this.storage.get(normalized)
 
@@ -27,19 +27,19 @@ export class MetadataContainer {
       return
     }
 
-    const compositeKey = MetadataContainer.makeCompositeKey(key, propertyKey)
+    const compositeKey = MetadataContainer.makeCompositeKey(key, propertyKey, parameterIndex)
 
     map.delete(compositeKey)
     this.lookupCache.delete(normalized)
   }
 
-  hasMetadata(key: MetadataKey, target: MetadataTarget, propertyKey?: PropertyKey) {
-    return this.getMetadata(key, target, propertyKey) !== undefined
+  hasMetadata(key: MetadataKey, target: MetadataTarget, propertyKey?: PropertyKey, parameterIndex?: number) {
+    return this.getMetadata(key, target, propertyKey, parameterIndex) !== undefined
   }
 
-  getMetadata(key: MetadataKey, target: MetadataTarget, propertyKey?: PropertyKey) {
+  getMetadata(key: MetadataKey, target: MetadataTarget, propertyKey?: PropertyKey, parameterIndex?: number) {
     const normalized = MetadataContainer.normalizeTarget(target, propertyKey)
-    const compositeKey = MetadataContainer.makeCompositeKey(key, propertyKey)
+    const compositeKey = MetadataContainer.makeCompositeKey(key, propertyKey, parameterIndex)
 
     const cache = this.lookupCache.get(normalized)
 
@@ -96,7 +96,7 @@ export class MetadataContainer {
     return map
   }
 
-  protected static makeCompositeKey(key: MetadataKey, propertyKey?: PropertyKey) {
+  protected static makeCompositeKey(key: MetadataKey, propertyKey?: PropertyKey, parameterIndex?: number) {
     if (propertyKey === undefined) {
       return key
     }
@@ -104,7 +104,11 @@ export class MetadataContainer {
     const prop = String(propertyKey)
     const keyNormalized = typeof key === 'symbol' ? key.toString() : String(key)
 
-    return prop + '|' + keyNormalized
+    if (parameterIndex === undefined) {
+      return prop + '|' + keyNormalized
+    }
+
+    return prop + '|param:' + String(parameterIndex) + '|' + keyNormalized
   }
 
   protected static normalizeTarget(target: MetadataTarget, propertyKey?: PropertyKey) {
