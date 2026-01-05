@@ -52,8 +52,13 @@ describe('MetadataContainer Parameter', () => {
     })
 
     test('should allow same parameter key in different methods/classes without conflicts', () => {
-      class A { method(p: any) { } }
-      class B { method(p: any) { } }
+      class A {
+        method(p: any) { }
+      }
+
+      class B {
+        method(p: any) { }
+      }
 
       container.defineMetadata('same-key', 'value', A.prototype, 'method', 0)
       container.defineMetadata('same-key', 'another-value', B.prototype, 'method', 0)
@@ -63,7 +68,10 @@ describe('MetadataContainer Parameter', () => {
     })
 
     test('should retrieve metadata defined on a parent class parameter from a subclass', () => {
-      class Parent { method(p: any) { } }
+      class Parent {
+        method(p: any) { }
+      }
+
       class Child extends Parent { }
 
       container.defineMetadata('key', 'value', Parent.prototype, 'method', 0)
@@ -73,39 +81,65 @@ describe('MetadataContainer Parameter', () => {
     })
 
     test('should create metadata for constructor parameters on the class', () => {
-      class CtorParam { constructor(a: any) { } }
+      class ClassWithMetadataInConstructorParam {
+        constructor(a: any) { }
+      }
 
-      container.defineMetadata('key', 'ctor-param', CtorParam, 'constructor', 0)
+      container.defineMetadata('key', 'constructor-param', ClassWithMetadataInConstructorParam, 'constructor', 0)
 
-      expect(container.getMetadata('key', CtorParam, 'constructor', 0)).toBe('ctor-param')
-      expect(container.hasMetadata('key', CtorParam, 'constructor', 0)).toBe(true)
+      expect(container.getMetadata('key', ClassWithMetadataInConstructorParam, 'constructor', 0)).toBe('constructor-param')
+      expect(container.hasMetadata('key', ClassWithMetadataInConstructorParam, 'constructor', 0)).toBe(true)
+    })
+
+    test('should create metadata for parameters other than the constructor in the class', () => {
+      class ClassWithMetadataInConstructorParam {
+        constructor(a: any, b: any) { }
+      }
+
+      container.defineMetadata('same-key', 'value', ClassWithMetadataInConstructorParam, 'constructor', 0)
+      container.defineMetadata('same-key', 'another-value', ClassWithMetadataInConstructorParam, 'constructor', 1)
+
+      expect(container.getMetadata('same-key', ClassWithMetadataInConstructorParam, 'constructor', 0)).toBe('value')
+      expect(container.hasMetadata('same-key', ClassWithMetadataInConstructorParam, 'constructor', 0)).toBe(true)
+
+      expect(container.getMetadata('same-key', ClassWithMetadataInConstructorParam, 'constructor', 1)).toBe('another-value')
+      expect(container.hasMetadata('same-key', ClassWithMetadataInConstructorParam, 'constructor', 1)).toBe(true)
     })
 
     test('should allow subclass to inherit constructor parameter metadata', () => {
-      class ParentCtor { constructor(a: any) { } }
-      class ChildCtor extends ParentCtor { }
+      class ParentClassWithMetadataInConstructor {
+        constructor(a: any) { }
+      }
 
-      container.defineMetadata('key', 'ctor-param', ParentCtor, 'constructor', 0)
+      class ChildClassWithMetadataInConstructor extends ParentClassWithMetadataInConstructor { }
 
-      expect(container.getMetadata('key', ChildCtor, 'constructor', 0)).toBe('ctor-param')
-      expect(container.hasMetadata('key', ChildCtor, 'constructor', 0)).toBe(true)
+      container.defineMetadata('key', 'constructor-param', ParentClassWithMetadataInConstructor, 'constructor', 0)
+
+      expect(container.getMetadata('key', ChildClassWithMetadataInConstructor, 'constructor', 0)).toBe('constructor-param')
+      expect(container.hasMetadata('key', ChildClassWithMetadataInConstructor, 'constructor', 0)).toBe(true)
     })
 
     test('should allow subclass to override constructor parameter metadata independently', () => {
-      class ParentCtor { constructor(a: any) { } }
-      class ChildCtor extends ParentCtor { }
+      class ParentClassWithMetadataInConstructor {
+        constructor(a: any) { }
+      }
 
-      container.defineMetadata('key', 'ctor-param', ParentCtor, 'constructor', 0)
-      container.defineMetadata('key', 'child-ctor-param', ChildCtor, 'constructor', 0)
+      class ChildClassWithMetadataInConstructor extends ParentClassWithMetadataInConstructor { }
 
-      expect(container.getMetadata('key', ParentCtor, 'constructor', 0)).toBe('ctor-param')
-      expect(container.getMetadata('key', ChildCtor, 'constructor', 0)).toBe('child-ctor-param')
+      container.defineMetadata('key', 'constructor-param', ParentClassWithMetadataInConstructor, 'constructor', 0)
+      container.defineMetadata('key', 'child-constructor-param', ChildClassWithMetadataInConstructor, 'constructor', 0)
+
+      expect(container.getMetadata('key', ParentClassWithMetadataInConstructor, 'constructor', 0)).toBe('constructor-param')
+      expect(container.getMetadata('key', ChildClassWithMetadataInConstructor, 'constructor', 0)).toBe('child-constructor-param')
     })
   })
 
   describe('Own metadata', () => {
     test('getOwnMetadata/hasOwnMetadata returns own parameter metadata only and not inherited', () => {
-      class Parent { method(p: any) { } }
+      class Parent {
+        method(p: any) { }
+      }
+
       class Child extends Parent { }
 
       container.defineMetadata('own-key', 'value', Parent.prototype, 'method', 0)
@@ -139,7 +173,9 @@ describe('MetadataContainer Parameter', () => {
 
   describe('Metadata removal', () => {
     test('should delete metadata defined on a parameter', () => {
-      class ClassWithParamToDelete { method(p: any) { } }
+      class ClassWithParamToDelete {
+        method(p: any) { }
+      }
 
       container.defineMetadata('key-to-delete', 'value', ClassWithParamToDelete.prototype, 'method', 0)
       expect(container.hasMetadata('key-to-delete', ClassWithParamToDelete.prototype, 'method', 0)).toBe(true)
@@ -149,7 +185,9 @@ describe('MetadataContainer Parameter', () => {
     })
 
     test('should delete only specified parameter metadata when multiple exist', () => {
-      class MultiParam { method(a: any, b: any) { } }
+      class MultiParam {
+        method(a: any, b: any) { }
+      }
 
       container.defineMetadata('key', 'value', MultiParam.prototype, 'method', 0)
       container.defineMetadata('key', 'deleted', MultiParam.prototype, 'method', 1)
@@ -163,8 +201,13 @@ describe('MetadataContainer Parameter', () => {
     })
 
     test('should delete constructor parameter metadata on target class only', () => {
-      class A { constructor(a: any) { } }
-      class B { constructor(a: any) { } }
+      class A {
+        constructor(a: any) { }
+      }
+
+      class B {
+        constructor(a: any) { }
+      }
 
       container.defineMetadata('same-key', 'value', A, 'constructor', 0)
       container.defineMetadata('same-key', 'deleted', B, 'constructor', 0)
@@ -180,7 +223,9 @@ describe('MetadataContainer Parameter', () => {
 
   describe('Metadata not found', () => {
     test('should not find metadata for a parameter that has no metadata', () => {
-      class NoParamMeta { method(p: any) { } }
+      class NoParamMeta {
+        method(p: any) { }
+      }
 
       expect(container.hasMetadata('missing-key', NoParamMeta.prototype, 'method', 0)).toBe(false)
     })
@@ -194,8 +239,13 @@ describe('MetadataContainer Parameter', () => {
     })
 
     test('should not find metadata on a parameter without metadata and not confuse with another class', () => {
-      class Without { method(p: any) { } }
-      class With { method(p: any) { } }
+      class Without {
+        method(p: any) { }
+      }
+
+      class With {
+        method(p: any) { }
+      }
 
       container.defineMetadata('key-conflict', 'value', With.prototype, 'method', 0)
 
