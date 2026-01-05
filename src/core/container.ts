@@ -115,7 +115,11 @@ export class MetadataContainer {
 
   protected static makeCompositeKey(key: MetadataKey, propertyKey?: PropertyKey, parameterIndex?: number) {
     if (propertyKey === undefined) {
-      return key
+      if (parameterIndex == undefined) {
+        return key
+      }
+
+      propertyKey = 'constructor'
     }
 
     const prop = String(propertyKey)

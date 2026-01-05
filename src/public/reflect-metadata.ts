@@ -51,7 +51,7 @@ export class ReflectMetadata {
 
     return (value: any, context: ClassDecoratorContext | ClassMethodDecoratorContext) => {
       if (context.kind == 'class') {
-        container.defineMetadata(metadataKey, metadataValue, value, 'constructor', param)
+        container.defineMetadata(metadataKey, metadataValue, value, undefined, param)
         return
       }
 
