@@ -28,4 +28,21 @@ export class ReflectMetadata {
   hasOwnMetadata(key: MetadataKey, target: MetadataTarget, propertyKey?: PropertyKey, parameterIndex?: number) {
     return this.container.hasOwnMetadata(key, target, propertyKey, parameterIndex)
   }
+
+  metadata(metadataKey: any, metadataValue: unknown) {
+    const container = this.container
+
+    return (value: any, context: DecoratorContext) => {
+      if (context.kind == 'class') {
+        container.defineMetadata(metadataKey, metadataValue, value)
+        return
+      }
+
+      context.addInitializer(function () {
+        const target = context.static ? this : (this as any).constructor.prototype
+
+        container.defineMetadata(metadataKey, metadataValue, target, context.name)
+      })
+    }
+  }
 }
