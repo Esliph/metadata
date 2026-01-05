@@ -150,6 +150,36 @@ describe('MetadataContainer Property', () => {
     })
   })
 
+  describe('Own metadata', () => {
+    test('getOwnMetadata/hasOwnMetadata returns own property metadata only and not inherited', () => {
+      class Parent { prop: any }
+      class Child extends Parent { }
+
+      container.defineMetadata('own-key', 'value', Parent.prototype, 'prop')
+
+      expect(container.hasOwnMetadata('own-key', Parent.prototype, 'prop')).toBe(true)
+      expect(container.getOwnMetadata('own-key', Parent.prototype, 'prop')).toBe('value')
+
+      expect(container.hasMetadata('own-key', Child.prototype, 'prop')).toBe(true)
+      expect(container.hasOwnMetadata('own-key', Child.prototype, 'prop')).toBe(false)
+      expect(container.getOwnMetadata('own-key', Child.prototype, 'prop')).toBeUndefined()
+    })
+
+    test('getOwnMetadata for instance property metadata stays on instance', () => {
+      class ClassWithMetadata {
+        prop: any
+      }
+
+      const instance = new ClassWithMetadata()
+
+      container.defineMetadata('own-key', 'value', instance, 'prop')
+
+      expect(container.hasOwnMetadata('own-key', instance, 'prop')).toBe(true)
+      expect(container.getOwnMetadata('own-key', instance, 'prop')).toBe('value')
+      expect(container.hasOwnMetadata('own-key', ClassWithMetadata.prototype, 'prop')).toBe(false)
+    })
+  })
+
   describe('Metadata removal', () => {
     test('should delete metadata defined on a class', () => {
       class ClassWithMetadataInPropertyToDelete {

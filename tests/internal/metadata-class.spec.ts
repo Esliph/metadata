@@ -116,6 +116,33 @@ describe('MetadataContainer Class', () => {
     })
   })
 
+  describe('Own metadata', () => {
+    test('getOwnMetadata/hasOwnMetadata returns own metadata only and not inherited', () => {
+      class Parent { }
+      class Child extends Parent { }
+
+      container.defineMetadata('own-key', 'value', Parent)
+
+      expect(container.hasOwnMetadata('own-key', Parent)).toBe(true)
+      expect(container.getOwnMetadata('own-key', Parent)).toBe('value')
+
+      expect(container.hasMetadata('own-key', Child)).toBe(true)
+      expect(container.hasOwnMetadata('own-key', Child)).toBe(false)
+      expect(container.getOwnMetadata('own-key', Child)).toBeUndefined()
+    })
+
+    test('getOwnMetadata reflects metadata defined via instance on the constructor', () => {
+      class ClassWithMetadata { }
+
+      const instance = new ClassWithMetadata()
+
+      container.defineMetadata('own-key', 'value', instance)
+
+      expect(container.hasOwnMetadata('own-key', ClassWithMetadata)).toBe(true)
+      expect(container.getOwnMetadata('own-key', ClassWithMetadata)).toBe('value')
+    })
+  })
+
   describe('Metadata removal', () => {
     test('should delete metadata defined on a class', () => {
       class ClassWithMetadataToDelete { }

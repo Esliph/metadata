@@ -188,6 +188,36 @@ describe('MetadataContainer Method', () => {
     })
   })
 
+  describe('Own metadata', () => {
+    test('getOwnMetadata/hasOwnMetadata returns own method metadata only and not inherited', () => {
+      class Parent { method() { } }
+      class Child extends Parent { }
+
+      container.defineMetadata('own-key', 'value', Parent.prototype, 'method')
+
+      expect(container.hasOwnMetadata('own-key', Parent.prototype, 'method')).toBe(true)
+      expect(container.getOwnMetadata('own-key', Parent.prototype, 'method')).toBe('value')
+
+      expect(container.hasMetadata('own-key', Child.prototype, 'method')).toBe(true)
+      expect(container.hasOwnMetadata('own-key', Child.prototype, 'method')).toBe(false)
+      expect(container.getOwnMetadata('own-key', Child.prototype, 'method')).toBeUndefined()
+    })
+
+    test('getOwnMetadata for instance method metadata stays on instance', () => {
+      class ClassWithMetadata {
+        method() { }
+      }
+
+      const instance = new ClassWithMetadata()
+
+      container.defineMetadata('own-key', 'value', instance, 'method')
+
+      expect(container.hasOwnMetadata('own-key', instance, 'method')).toBe(true)
+      expect(container.getOwnMetadata('own-key', instance, 'method')).toBe('value')
+      expect(container.hasOwnMetadata('own-key', ClassWithMetadata.prototype, 'method')).toBe(false)
+    })
+  })
+
   describe('Metadata removal', () => {
     test('should delete metadata defined on a method', () => {
       class ClassWithMethodToDelete {

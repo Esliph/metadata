@@ -103,6 +103,40 @@ describe('MetadataContainer Parameter', () => {
     })
   })
 
+  describe('Own metadata', () => {
+    test('getOwnMetadata/hasOwnMetadata returns own parameter metadata only and not inherited', () => {
+      class Parent { method(p: any) { } }
+      class Child extends Parent { }
+
+      container.defineMetadata('own-key', 'value', Parent.prototype, 'method', 0)
+
+      expect(container.hasOwnMetadata('own-key', Parent.prototype, 'method', 0)).toBe(true)
+      expect(container.getOwnMetadata('own-key', Parent.prototype, 'method', 0)).toBe('value')
+
+      expect(container.hasMetadata('own-key', Child.prototype, 'method', 0)).toBe(true)
+      expect(container.hasOwnMetadata('own-key', Child.prototype, 'method', 0)).toBe(false)
+      expect(container.getOwnMetadata('own-key', Child.prototype, 'method', 0)).toBeUndefined()
+    })
+
+    test('getOwnMetadata for constructor parameter is bound to class and not to other classes', () => {
+      class ClassWithMetadataInParameter {
+        constructor(a: any) { }
+      }
+
+      class ClassWithMetadataInParameterB {
+        constructor(a: any) { }
+      }
+
+      container.defineMetadata('same-key', 'value', ClassWithMetadataInParameter, 'constructor', 0)
+
+      expect(container.hasOwnMetadata('same-key', ClassWithMetadataInParameter, 'constructor', 0)).toBe(true)
+      expect(container.getOwnMetadata('same-key', ClassWithMetadataInParameter, 'constructor', 0)).toBe('value')
+
+      expect(container.hasOwnMetadata('same-key', ClassWithMetadataInParameterB, 'constructor', 0)).toBe(false)
+      expect(container.getOwnMetadata('same-key', ClassWithMetadataInParameterB, 'constructor', 0)).toBeUndefined()
+    })
+  })
+
   describe('Metadata removal', () => {
     test('should delete metadata defined on a parameter', () => {
       class ClassWithParamToDelete { method(p: any) { } }
