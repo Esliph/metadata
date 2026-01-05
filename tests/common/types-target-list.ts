@@ -1,3 +1,5 @@
+/* v8 ignore file -- @preserve */
+
 enum RandomEnum { FOO }
 
 export const INVALID_TARGET_LIST: any[] = [
