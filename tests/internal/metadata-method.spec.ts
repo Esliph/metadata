@@ -160,9 +160,9 @@ describe('MetadataContainer Method', () => {
         constructor() { }
       }
 
-      container.defineMetadata('key', 'ctor-value', ClassWithConstructor, 'constructor')
+      container.defineMetadata('key', 'constructor-value', ClassWithConstructor, 'constructor')
 
-      expect(container.getMetadata('key', ClassWithConstructor, 'constructor')).toBe('ctor-value')
+      expect(container.getMetadata('key', ClassWithConstructor, 'constructor')).toBe('constructor-value')
       expect(container.hasMetadata('key', ClassWithConstructor, 'constructor')).toBe(true)
     })
 
@@ -170,9 +170,9 @@ describe('MetadataContainer Method', () => {
       class ClassFatherWithConstructor { }
       class ClassChild extends ClassFatherWithConstructor { }
 
-      container.defineMetadata('key', 'ctor-value', ClassFatherWithConstructor, 'constructor')
+      container.defineMetadata('key', 'constructor-value', ClassFatherWithConstructor, 'constructor')
 
-      expect(container.getMetadata('key', ClassChild, 'constructor')).toBe('ctor-value')
+      expect(container.getMetadata('key', ClassChild, 'constructor')).toBe('constructor-value')
       expect(container.hasMetadata('key', ClassChild, 'constructor')).toBe(true)
     })
 
@@ -180,11 +180,11 @@ describe('MetadataContainer Method', () => {
       class ClassFatherWithConstructor { }
       class ClassChildWithConstructor extends ClassFatherWithConstructor { }
 
-      container.defineMetadata('key', 'ctor-value', ClassFatherWithConstructor, 'constructor')
-      container.defineMetadata('key', 'child-ctor', ClassChildWithConstructor, 'constructor')
+      container.defineMetadata('key', 'constructor-value', ClassFatherWithConstructor, 'constructor')
+      container.defineMetadata('key', 'child-constructor', ClassChildWithConstructor, 'constructor')
 
-      expect(container.getMetadata('key', ClassFatherWithConstructor, 'constructor')).toBe('ctor-value')
-      expect(container.getMetadata('key', ClassChildWithConstructor, 'constructor')).toBe('child-ctor')
+      expect(container.getMetadata('key', ClassFatherWithConstructor, 'constructor')).toBe('constructor-value')
+      expect(container.getMetadata('key', ClassChildWithConstructor, 'constructor')).toBe('child-constructor')
     })
   })
 

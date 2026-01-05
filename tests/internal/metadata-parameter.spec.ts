@@ -85,10 +85,10 @@ describe('MetadataContainer Parameter', () => {
         constructor(a: any) { }
       }
 
-      container.defineMetadata('key', 'constructor-param', ClassWithMetadataInConstructorParam, 'constructor', 0)
+      container.defineMetadata('key', 'constructor-param', ClassWithMetadataInConstructorParam, undefined, 0)
 
-      expect(container.getMetadata('key', ClassWithMetadataInConstructorParam, 'constructor', 0)).toBe('constructor-param')
-      expect(container.hasMetadata('key', ClassWithMetadataInConstructorParam, 'constructor', 0)).toBe(true)
+      expect(container.getMetadata('key', ClassWithMetadataInConstructorParam, undefined, 0)).toBe('constructor-param')
+      expect(container.hasMetadata('key', ClassWithMetadataInConstructorParam, undefined, 0)).toBe(true)
     })
 
     test('should create metadata for parameters other than the constructor in the class', () => {
@@ -96,14 +96,14 @@ describe('MetadataContainer Parameter', () => {
         constructor(a: any, b: any) { }
       }
 
-      container.defineMetadata('same-key', 'value', ClassWithMetadataInConstructorParam, 'constructor', 0)
-      container.defineMetadata('same-key', 'another-value', ClassWithMetadataInConstructorParam, 'constructor', 1)
+      container.defineMetadata('same-key', 'value', ClassWithMetadataInConstructorParam, undefined, 0)
+      container.defineMetadata('same-key', 'another-value', ClassWithMetadataInConstructorParam, undefined, 1)
 
-      expect(container.getMetadata('same-key', ClassWithMetadataInConstructorParam, 'constructor', 0)).toBe('value')
-      expect(container.hasMetadata('same-key', ClassWithMetadataInConstructorParam, 'constructor', 0)).toBe(true)
+      expect(container.getMetadata('same-key', ClassWithMetadataInConstructorParam, undefined, 0)).toBe('value')
+      expect(container.hasMetadata('same-key', ClassWithMetadataInConstructorParam, undefined, 0)).toBe(true)
 
-      expect(container.getMetadata('same-key', ClassWithMetadataInConstructorParam, 'constructor', 1)).toBe('another-value')
-      expect(container.hasMetadata('same-key', ClassWithMetadataInConstructorParam, 'constructor', 1)).toBe(true)
+      expect(container.getMetadata('same-key', ClassWithMetadataInConstructorParam, undefined, 1)).toBe('another-value')
+      expect(container.hasMetadata('same-key', ClassWithMetadataInConstructorParam, undefined, 1)).toBe(true)
     })
 
     test('should allow subclass to inherit constructor parameter metadata', () => {
@@ -113,10 +113,10 @@ describe('MetadataContainer Parameter', () => {
 
       class ChildClassWithMetadataInConstructor extends ParentClassWithMetadataInConstructor { }
 
-      container.defineMetadata('key', 'constructor-param', ParentClassWithMetadataInConstructor, 'constructor', 0)
+      container.defineMetadata('key', 'constructor-param', ParentClassWithMetadataInConstructor, undefined, 0)
 
-      expect(container.getMetadata('key', ChildClassWithMetadataInConstructor, 'constructor', 0)).toBe('constructor-param')
-      expect(container.hasMetadata('key', ChildClassWithMetadataInConstructor, 'constructor', 0)).toBe(true)
+      expect(container.getMetadata('key', ChildClassWithMetadataInConstructor, undefined, 0)).toBe('constructor-param')
+      expect(container.hasMetadata('key', ChildClassWithMetadataInConstructor, undefined, 0)).toBe(true)
     })
 
     test('should allow subclass to override constructor parameter metadata independently', () => {
@@ -126,11 +126,11 @@ describe('MetadataContainer Parameter', () => {
 
       class ChildClassWithMetadataInConstructor extends ParentClassWithMetadataInConstructor { }
 
-      container.defineMetadata('key', 'constructor-param', ParentClassWithMetadataInConstructor, 'constructor', 0)
-      container.defineMetadata('key', 'child-constructor-param', ChildClassWithMetadataInConstructor, 'constructor', 0)
+      container.defineMetadata('key', 'constructor-param', ParentClassWithMetadataInConstructor, undefined, 0)
+      container.defineMetadata('key', 'child-constructor-param', ChildClassWithMetadataInConstructor, undefined, 0)
 
-      expect(container.getMetadata('key', ParentClassWithMetadataInConstructor, 'constructor', 0)).toBe('constructor-param')
-      expect(container.getMetadata('key', ChildClassWithMetadataInConstructor, 'constructor', 0)).toBe('child-constructor-param')
+      expect(container.getMetadata('key', ParentClassWithMetadataInConstructor, undefined, 0)).toBe('constructor-param')
+      expect(container.getMetadata('key', ChildClassWithMetadataInConstructor, undefined, 0)).toBe('child-constructor-param')
     })
   })
 
@@ -161,13 +161,13 @@ describe('MetadataContainer Parameter', () => {
         constructor(a: any) { }
       }
 
-      container.defineMetadata('same-key', 'value', ClassWithMetadataInParameter, 'constructor', 0)
+      container.defineMetadata('same-key', 'value', ClassWithMetadataInParameter, undefined, 0)
 
-      expect(container.hasOwnMetadata('same-key', ClassWithMetadataInParameter, 'constructor', 0)).toBe(true)
-      expect(container.getOwnMetadata('same-key', ClassWithMetadataInParameter, 'constructor', 0)).toBe('value')
+      expect(container.hasOwnMetadata('same-key', ClassWithMetadataInParameter, undefined, 0)).toBe(true)
+      expect(container.getOwnMetadata('same-key', ClassWithMetadataInParameter, undefined, 0)).toBe('value')
 
-      expect(container.hasOwnMetadata('same-key', ClassWithMetadataInParameterB, 'constructor', 0)).toBe(false)
-      expect(container.getOwnMetadata('same-key', ClassWithMetadataInParameterB, 'constructor', 0)).toBeUndefined()
+      expect(container.hasOwnMetadata('same-key', ClassWithMetadataInParameterB, undefined, 0)).toBe(false)
+      expect(container.getOwnMetadata('same-key', ClassWithMetadataInParameterB, undefined, 0)).toBeUndefined()
     })
   })
 
@@ -209,15 +209,15 @@ describe('MetadataContainer Parameter', () => {
         constructor(a: any) { }
       }
 
-      container.defineMetadata('same-key', 'value', A, 'constructor', 0)
-      container.defineMetadata('same-key', 'deleted', B, 'constructor', 0)
+      container.defineMetadata('same-key', 'value', A, undefined, 0)
+      container.defineMetadata('same-key', 'deleted', B, undefined, 0)
 
-      expect(container.hasMetadata('same-key', B, 'constructor', 0)).toBe(true)
+      expect(container.hasMetadata('same-key', B, undefined, 0)).toBe(true)
 
-      container.deleteMetadata('same-key', B, 'constructor', 0)
+      container.deleteMetadata('same-key', B, undefined, 0)
 
-      expect(container.hasMetadata('same-key', A, 'constructor', 0)).toBe(true)
-      expect(container.hasMetadata('same-key', B, 'constructor', 0)).toBe(false)
+      expect(container.hasMetadata('same-key', A, undefined, 0)).toBe(true)
+      expect(container.hasMetadata('same-key', B, undefined, 0)).toBe(false)
     })
   })
 

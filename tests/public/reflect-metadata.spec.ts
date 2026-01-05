@@ -89,16 +89,16 @@ describe('ReflectMetadata public API', () => {
   test('constructor metadata: define/get/has/delete on class', () => {
     class ClassWithMetadataInConstructor { constructor(a: any) { } }
 
-    reflect.defineMetadata('key', 'value', ClassWithMetadataInConstructor, 'constructor', 0)
-    expect(reflect.hasMetadata('key', ClassWithMetadataInConstructor, 'constructor', 0)).toBe(true)
-    expect(reflect.getMetadata('key', ClassWithMetadataInConstructor, 'constructor', 0)).toBe('value')
-    expect(reflect.hasOwnMetadata('key', ClassWithMetadataInConstructor, 'constructor', 0)).toBe(true)
-    expect(reflect.getOwnMetadata('key', ClassWithMetadataInConstructor, 'constructor', 0)).toBe('value')
+    reflect.defineMetadata('key', 'value', ClassWithMetadataInConstructor, undefined, 0)
+    expect(reflect.hasMetadata('key', ClassWithMetadataInConstructor, undefined, 0)).toBe(true)
+    expect(reflect.getMetadata('key', ClassWithMetadataInConstructor, undefined, 0)).toBe('value')
+    expect(reflect.hasOwnMetadata('key', ClassWithMetadataInConstructor, undefined, 0)).toBe(true)
+    expect(reflect.getOwnMetadata('key', ClassWithMetadataInConstructor, undefined, 0)).toBe('value')
 
-    reflect.deleteMetadata('key', ClassWithMetadataInConstructor, 'constructor', 0)
-    expect(reflect.hasMetadata('key', ClassWithMetadataInConstructor, 'constructor', 0)).toBe(false)
-    expect(reflect.getMetadata('key', ClassWithMetadataInConstructor, 'constructor', 0)).toBeUndefined()
-    expect(reflect.hasOwnMetadata('key', ClassWithMetadataInConstructor, 'constructor', 0)).toBe(false)
-    expect(reflect.getOwnMetadata('key', ClassWithMetadataInConstructor, 'constructor', 0)).toBeUndefined()
+    reflect.deleteMetadata('key', ClassWithMetadataInConstructor, undefined, 0)
+    expect(reflect.hasMetadata('key', ClassWithMetadataInConstructor, undefined, 0)).toBe(false)
+    expect(reflect.getMetadata('key', ClassWithMetadataInConstructor, undefined, 0)).toBeUndefined()
+    expect(reflect.hasOwnMetadata('key', ClassWithMetadataInConstructor, undefined, 0)).toBe(false)
+    expect(reflect.getOwnMetadata('key', ClassWithMetadataInConstructor, undefined, 0)).toBeUndefined()
   })
 })

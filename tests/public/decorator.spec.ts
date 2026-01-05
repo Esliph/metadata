@@ -91,4 +91,40 @@ describe('ReflectMetadata decorator', () => {
     expect(reflect.hasMetadata('key', StaticMethod.prototype, 'method')).toBe(true)
     expect(reflect.getMetadata('key', StaticMethod.prototype, 'method')).toBe('value')
   })
+
+  test('parameter decorator (method) writes metadata to parameter via initializer', () => {
+    class ParameterInMethod {
+      @reflect.metadataParam(0, 'key', 'value')
+      method(p: any) { }
+    }
+
+    new ParameterInMethod()
+
+    expect(reflect.hasMetadata('key', ParameterInMethod.prototype, 'method', 0)).toBe(true)
+    expect(reflect.getMetadata('key', ParameterInMethod.prototype, 'method', 0)).toBe('value')
+  })
+
+  test('parameter decorator (constructor) writes metadata to constructor parameter on class', () => {
+    @reflect.metadataParam(0, 'key', 'value')
+    class ParameterInConstructor {
+      constructor(a: any) { }
+    }
+
+    new ParameterInConstructor('value')
+
+    expect(reflect.hasMetadata('key', ParameterInConstructor, undefined, 0)).toBe(true)
+    expect(reflect.getMetadata('key', ParameterInConstructor, undefined, 0)).toBe('value')
+  })
+
+  test('parameter decorator (static method) stores metadata and is readable', () => {
+    class ParameterInStaticMethod {
+      @reflect.metadataParam(0, 'key', 'value')
+      static test(p: any) { }
+    }
+
+    new ParameterInStaticMethod()
+
+    expect(reflect.hasMetadata('key', ParameterInStaticMethod.prototype, 'test', 0)).toBe(true)
+    expect(reflect.getMetadata('key', ParameterInStaticMethod.prototype, 'test', 0)).toBe('value')
+  })
 })
