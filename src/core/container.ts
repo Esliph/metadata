@@ -37,6 +37,10 @@ export class MetadataContainer {
     return this.getMetadata(key, target, propertyKey, parameterIndex) !== undefined
   }
 
+  hasOwnMetadata(key: MetadataKey, target: MetadataTarget, propertyKey?: PropertyKey, parameterIndex?: number) {
+    return this.getOwnMetadata(key, target, propertyKey, parameterIndex) !== undefined
+  }
+
   getMetadata(key: MetadataKey, target: MetadataTarget, propertyKey?: PropertyKey, parameterIndex?: number) {
     const normalized = MetadataContainer.normalizeTarget(target, propertyKey)
     const compositeKey = MetadataContainer.makeCompositeKey(key, propertyKey, parameterIndex)
@@ -70,6 +74,19 @@ export class MetadataContainer {
     newCache.set(compositeKey, MetadataContainer.NOT_FOUND)
 
     return undefined
+  }
+
+  getOwnMetadata(key: MetadataKey, target: MetadataTarget, propertyKey?: PropertyKey, parameterIndex?: number) {
+    const normalized = MetadataContainer.normalizeTarget(target, propertyKey)
+    const containerMap = this.storage.get(normalized)
+
+    if (!containerMap) {
+      return undefined
+    }
+
+    const compositeKey = MetadataContainer.makeCompositeKey(key, propertyKey, parameterIndex)
+
+    return containerMap.get(compositeKey)
   }
 
   protected getOrCreateMap(target: object) {

@@ -17,7 +17,15 @@ export class ReflectMetadata {
     return this.container.getMetadata(key, target, propertyKey, parameterIndex)
   }
 
+  getOwnMetadata(key: MetadataKey, target: MetadataTarget, propertyKey?: PropertyKey, parameterIndex?: number) {
+    return this.container.getOwnMetadata(key, target, propertyKey, parameterIndex)
+  }
+
   hasMetadata(key: MetadataKey, target: MetadataTarget, propertyKey?: PropertyKey, parameterIndex?: number) {
     return this.container.hasMetadata(key, target, propertyKey, parameterIndex)
+  }
+
+  hasOwnMetadata(key: MetadataKey, target: MetadataTarget, propertyKey?: PropertyKey, parameterIndex?: number) {
+    return this.container.hasOwnMetadata(key, target, propertyKey, parameterIndex)
   }
 }
