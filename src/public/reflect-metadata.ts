@@ -45,4 +45,21 @@ export class ReflectMetadata {
       })
     }
   }
+
+  metadataParam(param: number, metadataKey: any, metadataValue: unknown) {
+    const container = this.container
+
+    return (value: any, context: ClassDecoratorContext | ClassMethodDecoratorContext) => {
+      if (context.kind == 'class') {
+        container.defineMetadata(metadataKey, metadataValue, value, 'constructor', param)
+        return
+      }
+
+      context.addInitializer(function () {
+        const target = context.static ? this : (this as any).constructor.prototype
+
+        container.defineMetadata(metadataKey, metadataValue, target, context.name, param)
+      })
+    }
+  }
 }
