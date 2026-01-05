@@ -101,4 +101,36 @@ describe('ReflectMetadata public API', () => {
     expect(reflect.hasOwnMetadata('key', ClassWithMetadataInConstructor, undefined, 0)).toBe(false)
     expect(reflect.getOwnMetadata('key', ClassWithMetadataInConstructor, undefined, 0)).toBeUndefined()
   })
+
+  test('Symbol keys work via public API', () => {
+    const symbol = Symbol('symbol')
+
+    class ClassWithKeyAsSymbol { }
+
+    reflect.defineMetadata(symbol, 'value', ClassWithKeyAsSymbol)
+
+    expect(reflect.hasMetadata(symbol, ClassWithKeyAsSymbol)).toBe(true)
+    expect(reflect.getMetadata(symbol, ClassWithKeyAsSymbol)).toBe('value')
+
+    class Field {
+      prop: any
+    }
+
+    reflect.defineMetadata(symbol, 'value', Field.prototype, 'prop')
+    expect(reflect.getMetadata(symbol, Field.prototype, 'prop')).toBe('value')
+
+    class Method {
+      method() { }
+    }
+
+    reflect.defineMetadata(symbol, 'value', Method.prototype, 'method')
+    expect(reflect.getMetadata(symbol, Method.prototype, 'method')).toBe('value')
+
+    class Parameter {
+      method(a: any) { }
+    }
+
+    reflect.defineMetadata(symbol, 'value', Parameter.prototype, 'method', 0)
+    expect(reflect.getMetadata(symbol, Parameter.prototype, 'method', 0)).toBe('value')
+  })
 })

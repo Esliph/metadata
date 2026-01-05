@@ -218,6 +218,30 @@ describe('MetadataContainer Method', () => {
     })
   })
 
+  describe('Symbol keys', () => {
+    test('should support Symbol keys on methods and constructors', () => {
+      const symbol = Symbol('m-symbol')
+
+      class Method {
+        method() { }
+      }
+
+      container.defineMetadata(symbol, 'value', Method.prototype, 'method')
+
+      expect(container.hasMetadata(symbol, Method.prototype, 'method')).toBe(true)
+      expect(container.getMetadata(symbol, Method.prototype, 'method')).toBe('value')
+
+      class Constructor {
+        constructor(a: any) { }
+      }
+
+      container.defineMetadata(symbol, 'value', Constructor, 'constructor')
+
+      expect(container.hasMetadata(symbol, Constructor, 'constructor')).toBe(true)
+      expect(container.getMetadata(symbol, Constructor, 'constructor')).toBe('value')
+    })
+  })
+
   describe('Metadata removal', () => {
     test('should delete metadata defined on a method', () => {
       class ClassWithMethodToDelete {

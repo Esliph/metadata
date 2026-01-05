@@ -180,6 +180,28 @@ describe('MetadataContainer Property', () => {
     })
   })
 
+  describe('Symbol keys', () => {
+    test('should support Symbol keys on properties and instances', () => {
+      const symbol = Symbol('prop-symbol')
+
+      class Field {
+        field: any
+      }
+
+      container.defineMetadata(symbol, 'value', Field.prototype, 'field')
+
+      expect(container.hasMetadata(symbol, Field.prototype, 'field')).toBe(true)
+      expect(container.getMetadata(symbol, Field.prototype, 'field')).toBe('value')
+
+      const instance = new Field()
+
+      container.defineMetadata(symbol, 'instance-value', instance, 'field')
+
+      expect(container.hasMetadata(symbol, instance, 'field')).toBe(true)
+      expect(container.getMetadata(symbol, instance, 'field')).toBe('instance-value')
+    })
+  })
+
   describe('Metadata removal', () => {
     test('should delete metadata defined on a class', () => {
       class ClassWithMetadataInPropertyToDelete {

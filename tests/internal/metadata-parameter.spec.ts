@@ -171,6 +171,30 @@ describe('MetadataContainer Parameter', () => {
     })
   })
 
+  describe('Symbol keys', () => {
+    test('should support Symbol keys on parameters and constructor parameters', () => {
+      const symbol = Symbol('param-symbol')
+
+      class Property {
+        method(p: any) { }
+      }
+
+      container.defineMetadata(symbol, 'value', Property.prototype, 'method', 0)
+
+      expect(container.hasMetadata(symbol, Property.prototype, 'method', 0)).toBe(true)
+      expect(container.getMetadata(symbol, Property.prototype, 'method', 0)).toBe('value')
+
+      class Class {
+        constructor(a: any) { }
+      }
+
+      container.defineMetadata(symbol, 'value', Class, undefined, 0)
+
+      expect(container.hasMetadata(symbol, Class, undefined, 0)).toBe(true)
+      expect(container.getMetadata(symbol, Class, undefined, 0)).toBe('value')
+    })
+  })
+
   describe('Metadata removal', () => {
     test('should delete metadata defined on a parameter', () => {
       class ClassWithParamToDelete {

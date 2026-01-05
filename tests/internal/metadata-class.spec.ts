@@ -143,6 +143,19 @@ describe('MetadataContainer Class', () => {
     })
   })
 
+  describe('Symbol keys', () => {
+    test('should support Symbol keys on classes', () => {
+      const symbol = Symbol('symbol-key')
+
+      class Class { }
+
+      container.defineMetadata(symbol, 'value', Class)
+
+      expect(container.hasMetadata(symbol, Class)).toBe(true)
+      expect(container.getMetadata(symbol, Class)).toBe('value')
+    })
+  })
+
   describe('Metadata removal', () => {
     test('should delete metadata defined on a class', () => {
       class ClassWithMetadataToDelete { }
